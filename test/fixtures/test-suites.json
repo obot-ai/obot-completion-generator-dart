@@ -1,0 +1,176 @@
+[
+    {
+        "suiteName": "Process ja matching with default properties",
+        "locale": "ja",
+        "generatorProperties": {},
+        "cases": [
+            {
+                "name": "Input [Empty] and not matched",
+                "input": "",
+                "expectedIdx": []
+            },
+            {
+                "name": "Input [{TextNotIncluded}] and not matched",
+                "input": "今日の天気は？",
+                "expectedIdx": []
+            },
+            {
+                "name": "Input [{TextIncluded}] and matched",
+                "input": "ですか",
+                "expectedIdx": [0, 1]
+            },
+            {
+                "name": "Input [{PartOfKeyword}] and matched",
+                "input": "COVID-",
+                "expectedIdx": [1, 2]
+            },
+            {
+                "name": "Input [{PartOfKeyword} + {TextIncluded}] and matched",
+                "input": "コロナとは",
+                "expectedIdx": [1]
+            },
+            {
+                "name": "Input [{PartOfKeyword} + {TextIncluded}] and matched, Case 2",
+                "input": "コロナ休業",
+                "expectedIdx": [2]
+            },
+            {
+                "name": "Input [{PartOfKeyword} + {TextUnIncluded}] and not matched",
+                "input": "COVIDなに？",
+                "expectedIdx": []
+            },
+            {
+                "name": "Input [{PartOfKeyword} + {TextIncluded} + {PartOfKeyword}] and matched",
+                "input": "コロナとCOVID-19",
+                "expectedIdx": [1, 2]
+            },
+            {
+                "name": "Input [{PartOfKeyword} + {TextIncluded} + {PartOfKeyword} + {TextIncluded}] and matched",
+                "input": "COVIDによって休業心がけ",
+                "expectedIdx": [2]
+            },
+            {
+                "name": "Input [{PartOfKeyword} + {TextIncluded} + {PartOfKeyword} + {TextUnIncluded}] and not matched",
+                "input": "コロナとCOVID-19の関係は？",
+                "expectedIdx": []
+            }
+        ],
+        "dataset": [
+            {
+                "text": "新型コロナウイルス感染症とは何ですか？",
+                "keywords": ""
+            },
+            {
+                "text": "コロナウイルスとはどのようなウイルスですか？",
+                "keywords": "コロナウイルス,Corona Virus,COVID19,COVID-19,ころなういるす,新型コロナウイルス,Covid-19,Covid19,covid19,covid-19,COVID,コロナウィルス,ころな,COVIDー19,コロナ,新型コロナウイルス感染症,新型コロナウィルス感染症,コロな,ｺﾛﾅ,ｃoｖiｄ19,新型コロナ,新型コロナウィルス"
+            },
+            {
+                "text": "新型コロナウイルス感染症によって、事業の休止などを余儀なくされ、やむを得ず休業とする場合等にどのようなことに心がければよいのでしょうか。",
+                "keywords": "コロナウイルス,Corona Virus,COVID19,COVID-19,ころなういるす,新型コロナウイルス,Covid-19,Covid19,covid19,covid-19,COVID,コロナウィルス,ころな,COVIDー19,コロナ,新型コロナウイルス感染症,新型コロナウィルス感染症,コロな,ｺﾛﾅ,ｃoｖiｄ19,新型コロナ,新型コロナウィルス,休業,一時休業"
+            }
+        ]
+    },
+    {
+        "suiteName": "Process ja matching with property[minKeywordLength=4]",
+        "locale": "ja",
+        "generatorProperties": { "minKeywordLength": 4 },
+        "cases": [
+            {
+                "name": "Input [Empty] and not matched",
+                "input": "",
+                "expectedIdx": []
+            },
+            {
+                "name": "Input [{TextNotIncluded}] and not matched",
+                "input": "今日の天気は？",
+                "expectedIdx": []
+            },
+            {
+                "name": "Input [{TextIncluded}] and matched",
+                "input": "ですか",
+                "expectedIdx": [0, 1]
+            },
+            {
+                "name": "Input [{PartOfKeyword}] and matched",
+                "input": "COVID-",
+                "expectedIdx": [1, 2]
+            },
+            {
+                "name": "Input [{PartOfKeyword} + {TextIncluded}] and matched",
+                "input": "コロナとは",
+                "expectedIdx": []
+            },
+            {
+                "name": "Input [{PartOfKeyword} + {TextUnIncluded}] and not matched",
+                "input": "COVIDなに？",
+                "expectedIdx": []
+            },
+            {
+                "name": "Input [{PartOfKeyword} + {TextIncluded} + {PartOfKeyword}] and matched",
+                "input": "コロナとCOVID-19",
+                "expectedIdx": []
+            },
+            {
+                "name": "Input [{PartOfKeyword} + {TextIncluded} + {PartOfKeyword} + {TextUnIncluded}] and not matched",
+                "input": "コロナとCOVID-19の関係は？",
+                "expectedIdx": []
+            }
+        ],
+        "dataset": [
+            {
+                "text": "新型コロナウイルス感染症とは何ですか？",
+                "keywords": ""
+            },
+            {
+                "text": "コロナウイルスとはどのようなウイルスですか？",
+                "keywords": "コロナウイルス,Corona Virus,COVID19,COVID-19,ころなういるす,新型コロナウイルス,Covid-19,Covid19,covid19,covid-19,COVID,コロナウィルス,ころな,COVIDー19,コロナ,新型コロナウイルス感染症,新型コロナウィルス感染症,コロな,ｺﾛﾅ,ｃoｖiｄ19,新型コロナ,新型コロナウィルス"
+            },
+            {
+                "text": "新型コロナウイルス感染症によって、事業の休止などを余儀なくされ、やむを得ず休業とする場合等にどのようなことに心がければよいのでしょうか。",
+                "keywords": "コロナウイルス,Corona Virus,COVID19,COVID-19,ころなういるす,新型コロナウイルス,Covid-19,Covid19,covid19,covid-19,COVID,コロナウィルス,ころな,COVIDー19,コロナ,新型コロナウイルス感染症,新型コロナウィルス感染症,コロな,ｺﾛﾅ,ｃoｖiｄ19,新型コロナ,新型コロナウィルス"
+            }
+        ]
+    },
+    {
+        "suiteName": "Process en matching with default properties",
+        "locale": "en",
+        "generatorProperties": {},
+        "cases": [
+            {
+                "name": "Input [Empty] and not matched",
+                "input": "",
+                "expectedIdx": []
+            },
+            {
+                "name": "Input [{TextNotIncluded}] and not matched",
+                "input": "How",
+                "expectedIdx": []
+            },
+            {
+                "name": "Input [{TextIncluded}] and matched",
+                "input": "wha",
+                "expectedIdx": [0, 1]
+            },
+            {
+                "name": "Input [{TextIncluded} + {PartOfKeyword}] and matched",
+                "input": "what covid",
+                "expectedIdx": [1]
+            },
+            {
+                "name": "input [{TextIncluded} + {Keyword} + {PartOfKeyword}] and matched",
+                "input": "Is COVID-19 ne",
+                "expectedIdx": [1]
+            }
+        ],
+        "dataset": [
+            {
+                "text": "What is new coronaviruses?",
+                "keywords": ""
+            },
+            {
+                "text": "What kind of virus is coronavirus?",
+                "keywords": "coronavirus,Corona,new coronavirus,new coronaviruses,COVID-19,COVID"
+            }
+        ]
+    }
+]
