@@ -1,4 +1,4 @@
-import 'package:obot_completion_generator/index.dart';
+import 'package:obot_completion_generator/obot_completion_generator.dart';
 
 class TestCase {
   String name;
