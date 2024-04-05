@@ -1,3 +1,7 @@
+## 1.0.1
+
+- Change LICENSE to MIT
+
 ## 1.0.0
 
 - Change version to "1.0.0"
