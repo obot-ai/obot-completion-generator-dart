@@ -8,7 +8,7 @@ ObotAI入力補完サーバーデータを基づき、渡される入力テキ�
 
 <div align="center">
 
-[![CI](https://github.com/obot-ai/obot-completion-generator/actions/workflows/CI.yaml/badge.svg)](https://github.com/obot-ai/obot-completion-generator/actions/workflows/CI.yaml)
+[![CI](https://github.com/obot-ai/obot-completion-generator-dart/actions/workflows/CI.yaml/badge.svg?branch=main)](https://github.com/obot-ai/obot-completion-generator-dart/actions/workflows/CI.yaml)
 
 </div>
 
@@ -20,7 +20,7 @@ Fetcherを利用してデータを取得し、Generatorを用いて、入力内�
 ## Usage
 
 ```dart
-import 'package:obot_completion_generator/index.dart';
+import 'package:obot_completion_generator/obot_completion_generator.dart';
 
 void main() async {
   // Fetcherを利用してサーバーからデータを取得
