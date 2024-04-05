@@ -1,6 +1,6 @@
 name: obot_completion_generator
 description: A completion generator for ObotAI InputCompletion.
-version: 0.0.2
+version: 1.0.0
 repository: https://github.com/obot-ai/obot-completion-generator-dart
 
 environment:
