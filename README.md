@@ -17,6 +17,10 @@ ObotAI入力補完サーバーデータを基づき、渡される入力テキ�
 
 Fetcherを利用してデータを取得し、Generatorを用いて、入力内容に対して補完データが生成できる
 
+## Environment
+
+Dart: 3.3.3+
+
 ## Usage
 
 ```dart
