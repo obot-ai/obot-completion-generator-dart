@@ -1,3 +1,7 @@
+## 1.0.3
+
+- Throw exceptions if fetcher failed to fetch data expectedly
+
 ## 1.0.2
 
 - Update README.md
