@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class LocaleDataItem {
   String text;
   String keywords;
@@ -52,3 +54,5 @@ typedef LocaleDataFilter = List<MatchedResultData> Function(
 
 typedef GetEndpoint = String Function(String locale);
 typedef HandleResponse = List<LocaleDataItem> Function(String responseBody);
+typedef HandleHttpResponse = Future<List<LocaleDataItem>?> Function(
+    HttpClientResponse response);

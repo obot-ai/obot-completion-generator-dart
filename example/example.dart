@@ -26,13 +26,25 @@ void main(List<String> args) async {
       apiKey: apiKey,
       getEndpoint: (String locale) {
         return "$host/input_completion/$locale/";
+      },
+      handleHttpResponse: (HttpClientResponse response) async {
+        if (response.statusCode != 200) {
+          print("Failed to fetch data, ${response.statusCode}");
+          return [];
+        }
+        return null;
       });
 
-  List<LocaleDataItem> jaData = await fetcher.fetch(locale);
-  print("Fetched ${jaData.length} items: $jaData");
+  List<LocaleDataItem> localeData = await fetcher.fetch(locale);
+  if (localeData.isEmpty) {
+    print("No data fetched. Exiting.");
+    return;
+  }
+
+  print("Fetched ${localeData.length} items: $localeData");
 
   Generator generator = Generator();
-  generator.loadData(locale, jaData);
+  generator.loadData(locale, localeData);
 
   while (true) {
     print("Enter a keyword to get completions:");

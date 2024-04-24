@@ -9,18 +9,21 @@ class Fetcher {
   final String _httpMethod;
   final GetEndpoint? _getEndpoint;
   final HandleResponse? _handleResponse;
+  final HandleHttpResponse? _handleHttpResponse;
 
   Fetcher(
       {required String apiKey,
       String apiKeyHeaderName = "X-Secret-Key",
       String httpMethod = "GET",
       GetEndpoint? getEndpoint,
-      HandleResponse? handleResponse = _defaultHandleResponse})
+      HandleResponse? handleResponse = _defaultHandleResponse,
+      HandleHttpResponse? handleHttpResponse})
       : _apiKey = apiKey,
         _apiKeyHeaderName = apiKeyHeaderName,
         _httpMethod = httpMethod,
         _getEndpoint = getEndpoint,
-        _handleResponse = handleResponse;
+        _handleResponse = handleResponse,
+        _handleHttpResponse = handleHttpResponse;
 
   static List<LocaleDataItem> _defaultHandleResponse(String responseBody) {
     List<LocaleDataItem> results = [];
@@ -39,14 +42,6 @@ class Fetcher {
     String endpoint = _getEndpoint!(locale);
     Map<String, String> headers = {_apiKeyHeaderName: _apiKey};
 
-    dynamic response = await _fetch(endpoint, headers);
-    return _handleResponse!(response);
-  }
-
-  Future<dynamic> _fetch(String endpoint, Map<String, String> headers) async {
-    // HTTPRequestでデータを取得する
-    String? responseBody;
-
     HttpClient client = HttpClient();
     HttpClientRequest request =
         await client.openUrl(_httpMethod, Uri.parse(endpoint));
@@ -55,11 +50,23 @@ class Fetcher {
     });
     HttpClientResponse response = await request.close();
 
+    if (_handleHttpResponse != null) {
+      // HttpClientResponseを任意に扱うメソッドの定義があればそれを使う
+
+      List<LocaleDataItem>? handled = await _handleHttpResponse(response);
+      if (handled != null) {
+        // レスポンスを処理した結果があればそれを返す、なければデフォルトの処理を行う
+        client.close(force: true);
+        return handled;
+      }
+    }
+
+    String responseBody;
     try {
       responseBody = await response.transform(utf8.decoder).join();
     } finally {
       client.close();
     }
-    return responseBody;
+    return _handleResponse!(responseBody);
   }
 }
