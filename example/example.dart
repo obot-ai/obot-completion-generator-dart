@@ -20,19 +20,28 @@ void main(List<String> args) async {
     }
   }
 
-  print("Fetching [$locale] data from $host with API key $apiKey");
+  Generator generator = Generator();
 
+  print("Fetching [$locale] data from $host with API key $apiKey");
   Fetcher fetcher = Fetcher(
       apiKey: apiKey,
       getEndpoint: (String locale) {
         return "$host/input_completion/$locale/";
       });
 
-  List<LocaleDataItem> jaData = await fetcher.fetch(locale);
-  print("Fetched ${jaData.length} items: $jaData");
+  try {
+    List<LocaleDataItem> localeData = await fetcher.fetch(locale);
+    print("Fetched ${localeData.length} items: $localeData");
 
-  Generator generator = Generator();
-  generator.loadData(locale, jaData);
+    generator.loadData(locale, localeData);
+  } on FetchFailedException catch (e) {
+    print("Failed to fetch data. Exception: $e");
+    print("ResponseBody: ${e.responseBody}");
+    return;
+  } on UnexpectedResponseBodyException catch (e) {
+    print("Unexpected response body. Exception: $e");
+    return;
+  }
 
   while (true) {
     print("Enter a keyword to get completions:");

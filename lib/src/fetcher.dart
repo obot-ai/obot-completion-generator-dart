@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'exceptions.dart';
 import 'types.dart';
 
 class Fetcher {
@@ -56,9 +57,20 @@ class Fetcher {
     HttpClientResponse response = await request.close();
 
     try {
+      // レスポンスを読み取る
       responseBody = await response.transform(utf8.decoder).join();
+    } catch (e) {
+      // UTF-8でデコードできない場合は例外を投げる
+      throw UnexpectedResponseBodyException(
+          "Failed to read response from $endpoint", response.statusCode);
     } finally {
       client.close();
+    }
+
+    if (response.statusCode != 200) {
+      // ステータスコードが200以外の場合は例外を投げる
+      throw FetchFailedException("Failed to fetch data from $endpoint",
+          response.statusCode, responseBody);
     }
     return responseBody;
   }
