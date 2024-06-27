@@ -1,9 +1,5 @@
 import "types.dart";
-import "utils.dart"
-    show
-        isSameKeyword,
-        range,
-        cloneLocaleData;
+import "utils.dart" show isSameKeyword, range, cloneLocaleData;
 
 class MatcherProperties {
   String keywordSeparator;
@@ -77,7 +73,9 @@ class Matcher {
     _scoreResults(results, input, locale);
     _sortResults(results, input, locale);
 
-    if (_maxResults != null && _maxResults > 0 && _maxResults < results.length) {
+    if (_maxResults != null &&
+        _maxResults > 0 &&
+        _maxResults < results.length) {
       return results.sublist(0, _maxResults);
     }
     return results;
@@ -87,7 +85,8 @@ class Matcher {
     return [];
   }
 
-  void _scoreResults(List<MatchedResultData> results, String input, String locale) {
+  void _scoreResults(
+      List<MatchedResultData> results, String input, String locale) {
     MatchedResultDataScorer scorer;
     if (_scorer != null) {
       scorer = _scorer;
@@ -121,7 +120,8 @@ class Matcher {
     return score;
   }
 
-  void _sortResults(List<MatchedResultData> results, String input, String locale) {
+  void _sortResults(
+      List<MatchedResultData> results, String input, String locale) {
     MatchedResultDataSort sort;
     if (_sort != null) {
       sort = _sort;
@@ -131,7 +131,8 @@ class Matcher {
     results.sort((rsA, rsB) => sort(rsA, rsB, input, locale));
   }
 
-  int _defaultSort(MatchedResultData rsA, MatchedResultData rsB, String input, String locale) {
+  int _defaultSort(MatchedResultData rsA, MatchedResultData rsB, String input,
+      String locale) {
     if (rsA.score != null && rsB.score != null) {
       return rsB.score! - rsA.score!;
     }
@@ -150,7 +151,7 @@ class ForwardMatcher extends Matcher {
       super.sort,
       super.maxResults})
       : super();
-  ForwardMatcher.fromProperties(super.props): super.fromProperties();
+  ForwardMatcher.fromProperties(super.props) : super.fromProperties();
 
   @override
   List<MatchedResultData> _match(String input, String locale) {
@@ -162,7 +163,8 @@ class ForwardMatcher extends Matcher {
 
     if (_comparator != null) {
       LocaleDataComparator comparator = _comparator;
-      localeData.sort((itemA, itemB) => comparator(itemA, itemB, input, locale));
+      localeData
+          .sort((itemA, itemB) => comparator(itemA, itemB, input, locale));
     }
 
     if (_filter != null) {
@@ -173,7 +175,8 @@ class ForwardMatcher extends Matcher {
     return _forwardMatch(localeData, input.toLowerCase(), locale);
   }
 
-  List<MatchedResultData> _forwardMatch(List<LocaleDataItem> localeData, String input, String locale) {
+  List<MatchedResultData> _forwardMatch(
+      List<LocaleDataItem> localeData, String input, String locale) {
     bool doStrictMatch = _strictMatchLocales.contains(locale);
 
     List<MatchedResultData> results = [];
@@ -235,7 +238,8 @@ class ForwardMatcher extends Matcher {
       } else if (!text.contains(word)) {
         return MatchedResult(
             isMatched: false,
-            data: MatchedResultData(text: dataItem.text, keywords: dataItem.keywords));
+            data: MatchedResultData(
+                text: dataItem.text, keywords: dataItem.keywords));
       } else {
         startAt += 1;
       }
@@ -252,7 +256,9 @@ class ForwardMatcher extends Matcher {
 
       if (startAt > prevEndAt + 1) {
         noMatchedKeywordParts.add(NoMatchedKeywordPart(
-            text: input.substring(prevEndAt + 1, startAt), startAt: prevEndAt + 1, endAt: startAt - 1));
+            text: input.substring(prevEndAt + 1, startAt),
+            startAt: prevEndAt + 1,
+            endAt: startAt - 1));
       }
 
       prevKeyword = currentKeyword;
@@ -265,10 +271,13 @@ class ForwardMatcher extends Matcher {
       int lastEndAt = currentKeyword.endAt;
       if (lastEndAt + 1 < inputLength) {
         noMatchedKeywordParts.add(NoMatchedKeywordPart(
-            text: input.substring(lastEndAt + 1), startAt: lastEndAt + 1, endAt: inputLength - 1));
+            text: input.substring(lastEndAt + 1),
+            startAt: lastEndAt + 1,
+            endAt: inputLength - 1));
       }
     }
-    bool isMatched = noMatchedKeywordParts.every((part) => text.contains(part.text));
+    bool isMatched =
+        noMatchedKeywordParts.every((part) => text.contains(part.text));
     int noKeywordMatchedLength = 0;
     for (NoMatchedKeywordPart part in noMatchedKeywordParts) {
       noKeywordMatchedLength += part.text.length;
@@ -299,7 +308,8 @@ class ForwardMatcher extends Matcher {
     if (!lastInputMatched) {
       return MatchedResult(
           isMatched: false,
-          data: MatchedResultData(text: dataItem.text, keywords: dataItem.keywords));
+          data: MatchedResultData(
+              text: dataItem.text, keywords: dataItem.keywords));
     }
 
     List<MatchedKeyword> matchedKeywords = [];
@@ -307,10 +317,8 @@ class ForwardMatcher extends Matcher {
     for (String mkw in inputs.where((ipt) => keywords.contains(ipt))) {
       int startAt = input.indexOf(mkw, lastEndAt);
       int endAt = startAt + mkw.length - 1;
-      matchedKeywords.add(MatchedKeyword(
-          text: mkw,
-          startAt: startAt,
-          endAt: endAt));
+      matchedKeywords
+          .add(MatchedKeyword(text: mkw, startAt: startAt, endAt: endAt));
       lastEndAt = endAt;
     }
     if (lastInputKeyword) {
@@ -355,7 +363,7 @@ class KeywordMatcher extends Matcher {
       super.maxResults})
       : super();
 
-  KeywordMatcher.fromProperties(super.props): super.fromProperties();
+  KeywordMatcher.fromProperties(super.props) : super.fromProperties();
 
   @override
   void loadData(String locale, List<LocaleDataItem> localeData) {
@@ -381,14 +389,16 @@ class KeywordMatcher extends Matcher {
       return kwB.length - kwA.length;
     });
 
-    _exactRegExpMap[locale] = RegExp(allKeywords.join("|"), caseSensitive: false);
+    _exactRegExpMap[locale] =
+        RegExp(allKeywords.join("|"), caseSensitive: false);
 
     List<String> partialPatterns = [];
     for (String kw in allKeywords) {
       if (kw.length > _minKeywordLength) {
         String partStr = kw.substring(0, _minKeywordLength);
         List<String> parts = [partStr];
-        for (int num in range(kw.length - _minKeywordLength, _minKeywordLength)) {
+        for (int num
+            in range(kw.length - _minKeywordLength, _minKeywordLength)) {
           partStr += kw[num];
           parts.add(partStr);
         }
@@ -398,7 +408,8 @@ class KeywordMatcher extends Matcher {
         partialPatterns.add(kw);
       }
     }
-    _partialRegExpMap[locale] = RegExp(partialPatterns.join("|"), caseSensitive: false);
+    _partialRegExpMap[locale] =
+        RegExp(partialPatterns.join("|"), caseSensitive: false);
   }
 
   @override
@@ -411,13 +422,15 @@ class KeywordMatcher extends Matcher {
 
     if (_comparator != null) {
       LocaleDataComparator comparator = _comparator;
-      localeData.sort((itemA, itemB) => comparator(itemA, itemB, input, locale));
+      localeData
+          .sort((itemA, itemB) => comparator(itemA, itemB, input, locale));
     }
 
     return _keywordMatch(localeData, input.toLowerCase(), locale);
   }
 
-  List<MatchedResultData> _keywordMatch(List<LocaleDataItem> localeData, String input, String locale) {
+  List<MatchedResultData> _keywordMatch(
+      List<LocaleDataItem> localeData, String input, String locale) {
     List<MatchedResultData> results = [];
     RegExp? exactRegExp = _exactRegExpMap[locale];
     if (localeData.isNotEmpty && exactRegExp != null) {
@@ -435,9 +448,7 @@ class KeywordMatcher extends Matcher {
           int startAt = input.indexOf(match.group(0)!, lastEndAt);
           int endAt = startAt + match.group(0)!.length - 1;
           matchedKeywords.add(MatchedKeyword(
-              text: match.group(0)!,
-              startAt: startAt,
-              endAt: endAt));
+              text: match.group(0)!, startAt: startAt, endAt: endAt));
           lastEndAt = endAt;
         }
         for (LocaleDataItem item in localeData) {
@@ -473,10 +484,9 @@ class ConcatMatcher extends Matcher {
       super.filter,
       super.scorer,
       super.sort,
-      super.maxResults
-      })
+      super.maxResults})
       : super();
-  ConcatMatcher.fromProperties(super.props): super.fromProperties();
+  ConcatMatcher.fromProperties(super.props) : super.fromProperties();
 
   void addMatcherByClass(Type matcherClass) {
     if (matcherClass == ForwardMatcher) {
@@ -549,19 +559,18 @@ class ConcatMatcher extends Matcher {
 }
 
 class KeywordForwardMatcher extends ConcatMatcher {
-  KeywordForwardMatcher({
-    super.keywordSeparator,
-    super.minKeywordLength,
-    super.strictMatchLocales,
-    super.comparator,
-    super.scorer,
-    super.sort,
-    super.maxResults
-  })
-  : super() {
+  KeywordForwardMatcher(
+      {super.keywordSeparator,
+      super.minKeywordLength,
+      super.strictMatchLocales,
+      super.comparator,
+      super.scorer,
+      super.sort,
+      super.maxResults})
+      : super() {
     _initMatchers();
   }
-  KeywordForwardMatcher.fromProperties(super.props): super.fromProperties() {
+  KeywordForwardMatcher.fromProperties(super.props) : super.fromProperties() {
     _initMatchers();
   }
 

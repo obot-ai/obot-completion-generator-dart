@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:obot_completion_generator/obot_completion_generator.dart' hide Matcher;
-import 'package:obot_completion_generator/obot_completion_generator.dart' as obot_completion_generator show Matcher;
+import 'package:obot_completion_generator/obot_completion_generator.dart'
+    hide Matcher;
+import 'package:obot_completion_generator/obot_completion_generator.dart'
+    as obot_completion_generator show Matcher;
 import 'package:test/test.dart';
 
 import 'utils.dart';
@@ -54,7 +56,7 @@ void main() {
   for (TestSuite suite in testSuites) {
     group(suite.name, () {
       Generator generator;
-      
+
       Map generatorProps = suite.generatorProps;
       Map matcherProps = suite.matcherProps;
       if (generatorProps.isNotEmpty) {
@@ -76,7 +78,8 @@ void main() {
           matcherProperties.minKeywordLength = matcherProps["minKeywordLength"];
         }
         if (matcherProps["strictMatchLocales"] != null) {
-          matcherProperties.strictMatchLocales = matcherProps["strictMatchLocales"];
+          matcherProperties.strictMatchLocales =
+              matcherProps["strictMatchLocales"];
         }
         if (matcherProps["maxResults"] != null) {
           matcherProperties.maxResults = matcherProps["maxResults"];
@@ -84,7 +87,7 @@ void main() {
         if (suite.matcher == "keyword") {
           matcher = KeywordMatcher.fromProperties(matcherProperties);
         } else if (suite.matcher == "keyword_forward") {
-          matcher = KeywordForwardMatcher.fromProperties(matcherProperties);  
+          matcher = KeywordForwardMatcher.fromProperties(matcherProperties);
         } else if (suite.matcher == "forward") {
           matcher = ForwardMatcher.fromProperties(matcherProperties);
         } else {
@@ -113,12 +116,11 @@ void main() {
 
   group("Tests for some custom options", () {
     test("ForwardMatcher scorer ja", () {
-      ForwardMatcher matcher = ForwardMatcher.fromProperties(MatcherProperties());
+      ForwardMatcher matcher =
+          ForwardMatcher.fromProperties(MatcherProperties());
       Generator generator = Generator.fromMatcher(matcher);
       generator.loadData("ja", [
-        LocaleDataItem(
-            text: "新型コロナウイルス感染症とは何ですか？",
-            keywords: ""),
+        LocaleDataItem(text: "新型コロナウイルス感染症とは何ですか？", keywords: ""),
         LocaleDataItem(
             text: "コロナウイルスとはどのようなウイルスですか？",
             keywords:
@@ -137,22 +139,23 @@ void main() {
         ScoreTestCase(input: "cOVIDとは", expectedScores: [12]),
         ScoreTestCase(input: "コロナで休業になったらどうする？", expectedScores: []),
         ScoreTestCase(input: "こんにちは、COVIDについて教えてもらえますか？", expectedScores: []),
-        ScoreTestCase(input: "こんにちは、新型コロナウイルスについて教えてもらえますか？", expectedScores: [])
+        ScoreTestCase(
+            input: "こんにちは、新型コロナウイルスについて教えてもらえますか？", expectedScores: [])
       ];
       for (ScoreTestCase testCase in cases) {
         List<MatchedResultData> results =
             generator.generateCompletions(testCase.input, "ja");
-        expect(results.map((res) => res.score), equals(testCase.expectedScores));
+        expect(
+            results.map((res) => res.score), equals(testCase.expectedScores));
       }
     });
 
     test("KeywordForwardMatcher scorer ja", () {
-      KeywordForwardMatcher matcher = KeywordForwardMatcher.fromProperties(MatcherProperties());
+      KeywordForwardMatcher matcher =
+          KeywordForwardMatcher.fromProperties(MatcherProperties());
       Generator generator = Generator.fromMatcher(matcher);
       generator.loadData("ja", [
-        LocaleDataItem(
-            text: "新型コロナウイルス感染症とは何ですか？",
-            keywords: ""),
+        LocaleDataItem(text: "新型コロナウイルス感染症とは何ですか？", keywords: ""),
         LocaleDataItem(
             text: "コロナウイルスとはどのようなウイルスですか？",
             keywords:
@@ -169,23 +172,25 @@ void main() {
         ScoreTestCase(input: "新型コロナウイルス", expectedScores: [19, 10, 9]),
         ScoreTestCase(input: "新型コロナウイルスとは", expectedScores: [19, 12]),
         ScoreTestCase(input: "コロナで休業になったらどうする？", expectedScores: [25, 13]),
-        ScoreTestCase(input: "こんにちは、COVIDについて教えてもらえますか？", expectedScores: [10, 10]),
-        ScoreTestCase(input: "こんにちは、新型コロナウイルスについて教えてもらえますか？", expectedScores: [19, 10])
+        ScoreTestCase(
+            input: "こんにちは、COVIDについて教えてもらえますか？", expectedScores: [10, 10]),
+        ScoreTestCase(
+            input: "こんにちは、新型コロナウイルスについて教えてもらえますか？", expectedScores: [19, 10])
       ];
       for (ScoreTestCase testCase in cases) {
         List<MatchedResultData> results =
             generator.generateCompletions(testCase.input, "ja");
-        expect(results.map((res) => res.score), equals(testCase.expectedScores));
+        expect(
+            results.map((res) => res.score), equals(testCase.expectedScores));
       }
     });
 
     test("ForwardMatcher scorer en", () {
-      ForwardMatcher matcher = ForwardMatcher.fromProperties(MatcherProperties());
+      ForwardMatcher matcher =
+          ForwardMatcher.fromProperties(MatcherProperties());
       Generator generator = Generator.fromMatcher(matcher);
       generator.loadData("en", [
-        LocaleDataItem(
-            text: "How is the weather today?",
-            keywords: ""),
+        LocaleDataItem(text: "How is the weather today?", keywords: ""),
         LocaleDataItem(
             text: "Can you tell me what the weather is today?",
             keywords: "today,yesterday,tomorrow,how,what"),
@@ -195,23 +200,25 @@ void main() {
       ]);
       List<ScoreTestCase> cases = [
         ScoreTestCase(input: "how", expectedScores: [10, 3]),
-        ScoreTestCase(input: "how is the weather today", expectedScores: [37, 20]),
-        ScoreTestCase(input: "It seems to be a bad day today.", expectedScores: [])
+        ScoreTestCase(
+            input: "how is the weather today", expectedScores: [37, 20]),
+        ScoreTestCase(
+            input: "It seems to be a bad day today.", expectedScores: [])
       ];
       for (ScoreTestCase testCase in cases) {
         List<MatchedResultData> results =
             generator.generateCompletions(testCase.input, "en");
-        expect(results.map((res) => res.score), equals(testCase.expectedScores));
+        expect(
+            results.map((res) => res.score), equals(testCase.expectedScores));
       }
     });
 
     test("KeywordForwardMatcher scorer en", () {
-      KeywordForwardMatcher matcher = KeywordForwardMatcher.fromProperties(MatcherProperties());
+      KeywordForwardMatcher matcher =
+          KeywordForwardMatcher.fromProperties(MatcherProperties());
       Generator generator = Generator.fromMatcher(matcher);
       generator.loadData("en", [
-        LocaleDataItem(
-            text: "How is the weather today?",
-            keywords: ""),
+        LocaleDataItem(text: "How is the weather today?", keywords: ""),
         LocaleDataItem(
             text: "Can you tell me what the weather is today?",
             keywords: "today,yesterday,tomorrow,how,what"),
@@ -221,13 +228,16 @@ void main() {
       ]);
       List<ScoreTestCase> cases = [
         ScoreTestCase(input: "how", expectedScores: [10, 3]),
-        ScoreTestCase(input: "how is the weather today", expectedScores: [37, 20, 10]),
-        ScoreTestCase(input: "It seems to be a bad day today.", expectedScores: [23, 15])
+        ScoreTestCase(
+            input: "how is the weather today", expectedScores: [37, 20, 10]),
+        ScoreTestCase(
+            input: "It seems to be a bad day today.", expectedScores: [23, 15])
       ];
       for (ScoreTestCase testCase in cases) {
         List<MatchedResultData> results =
             generator.generateCompletions(testCase.input, "en");
-        expect(results.map((res) => res.score), equals(testCase.expectedScores));
+        expect(
+            results.map((res) => res.score), equals(testCase.expectedScores));
       }
     });
   });

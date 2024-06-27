@@ -4,25 +4,24 @@ import 'matcher.dart';
 class Generator {
   final Matcher _matcher;
 
-  factory Generator({
-    String keywordSeparator = ",",
-    int minKeywordLength = 2,
-    List<String> strictMatchLocales = const ["en"],
-    LocaleDataComparator? comparator,
-    LocaleDataFilter? filter,
-    MatchedResultDataScorer? scorer,
-    MatchedResultDataSort? sort,
-    int? maxResults
-  }) => Generator.fromMatcher(DefaultMatcher(
-    keywordSeparator: keywordSeparator,
-    minKeywordLength: minKeywordLength,
-    strictMatchLocales: strictMatchLocales,
-    comparator: comparator,
-    filter: filter,
-    scorer: scorer,
-    sort: sort,
-    maxResults: maxResults
-  ));
+  factory Generator(
+          {String keywordSeparator = ",",
+          int minKeywordLength = 2,
+          List<String> strictMatchLocales = const ["en"],
+          LocaleDataComparator? comparator,
+          LocaleDataFilter? filter,
+          MatchedResultDataScorer? scorer,
+          MatchedResultDataSort? sort,
+          int? maxResults}) =>
+      Generator.fromMatcher(DefaultMatcher(
+          keywordSeparator: keywordSeparator,
+          minKeywordLength: minKeywordLength,
+          strictMatchLocales: strictMatchLocales,
+          comparator: comparator,
+          filter: filter,
+          scorer: scorer,
+          sort: sort,
+          maxResults: maxResults));
 
   Generator.fromMatcher(Matcher matcher) : _matcher = matcher;
 

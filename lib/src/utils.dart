@@ -5,7 +5,9 @@ List<int> range(int length, int startAt) {
 }
 
 bool isSameKeyword(MatchedKeyword kwA, MatchedKeyword kwB) {
-  if (kwA.text != kwB.text || kwA.startAt != kwB.startAt || kwA.endAt != kwB.endAt) {
+  if (kwA.text != kwB.text ||
+      kwA.startAt != kwB.startAt ||
+      kwA.endAt != kwB.endAt) {
     return false;
   }
   return true;
