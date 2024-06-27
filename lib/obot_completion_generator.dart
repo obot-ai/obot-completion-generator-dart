@@ -15,3 +15,12 @@ export 'src/types.dart'
         LocaleDataFilter,
         GetEndpoint,
         HandleResponse;
+export 'src/matcher.dart'
+    show
+        MatcherProperties,
+        Matcher,
+        DefaultMatcher,
+        ForwardMatcher,
+        KeywordMatcher,
+        ConcatMatcher,
+        KeywordForwardMatcher;

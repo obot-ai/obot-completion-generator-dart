@@ -6,6 +6,7 @@ void main(List<String> args) async {
   String host = "";
   String apiKey = "";
   String locale = "ja";
+  int? maxResults;
 
   for (var i = 0; i < args.length; i++) {
     if (i >= args.length - 1) {
@@ -17,10 +18,18 @@ void main(List<String> args) async {
       apiKey = args[i + 1];
     } else if (args[i] == "--locale") {
       locale = args[i + 1];
+    } else if (args[i] == "--max-results") {
+      maxResults = int.tryParse(args[i + 1]) ?? 0;
     }
   }
 
-  Generator generator = Generator();
+  MatcherProperties props = MatcherProperties();
+  if (maxResults != null) {
+    props.maxResults = maxResults;
+  }
+  KeywordForwardMatcher matcher = KeywordForwardMatcher.fromProperties(props);
+  // KeywordForwardMatcher matcher = KeywordForwardMatcher(maxResults: 5);
+  Generator generator = Generator.fromMatcher(matcher);
 
   print("Fetching [$locale] data from $host with API key $apiKey");
   Fetcher fetcher = Fetcher(

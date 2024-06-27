@@ -35,9 +35,16 @@ void main() async {
       });
   List<LocaleDataItem> jaData = await fetcher.fetch("ja");
 
+  // Matcherを作成
+
+  // KeywordForwardMatcher.fromProperties: MatcherPropertiesクラスを使って動的に値を設定することもできます
+  // MatcherProperties props = MatcherProperties()
+  // MatcherProperties.maxResults = 5
+  // KeywordForwardMatcher matcher = KeywordForwardMatcher.fromProperties()
+  KeywordForwardMatcher matcher = KeywordForwardMatcher()
+
   // Generatorを用いて補完データを生成
-  Generator generator = Generator(
-      minKeywordLength: 2, keywordSeparator: ",", strictMatchLocales: ["en"]);
+  Generator generator = Generator.fromMatcher(matcher);
   generator.loadData("ja", jaData);
 
   List<MatchedResultData> completions =

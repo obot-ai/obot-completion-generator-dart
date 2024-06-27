@@ -1,3 +1,7 @@
+## 1.1.0
+
+- Add Matcher class
+
 ## 1.0.3
 
 - Throw exceptions if fetcher failed to fetch data expectedly
